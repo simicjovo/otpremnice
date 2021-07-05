@@ -3,7 +3,10 @@ const jwt = require("jsonwebtoken");
 const { Blacklist } = require("../models/blacklist.model");
 
 const auth = async (req, res, next) => {
-  const token = req.cookies["JWT-auth"];
+  let token = false;
+  if (req.cookies) {
+    token = req.cookies["JWT-auth"];
+  }
   if (!token) return res.status(401).send("Access Denied");
 
   try {

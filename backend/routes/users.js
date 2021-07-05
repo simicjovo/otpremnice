@@ -20,7 +20,7 @@ router.post("/register", verify, (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  const user = await User.findOne({ username: req.body.username });
+  const user = await User.findOne({ name: req.body.username });
   if (!user) {
     return res.status(400).send("Pogresno korisnicko ime");
   }
@@ -36,7 +36,7 @@ router.post("/login", async (req, res) => {
     httpOnly: true,
     secure: true,
   });
-  res.json(user);
+  res.json("Logged in");
 });
 
 router.get("/logout", (req, res) => {
