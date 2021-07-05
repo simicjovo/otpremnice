@@ -9,13 +9,13 @@ app.options("*", cors());
 
 const otpremniceRouter = require("./routes/otpremnice");
 const servisiRouter = require("./routes/servisi");
-const skladisteRouter = require("./routes/skladiste");
+const produktRouter = require("./routes/produkt");
 const usersRouter = require("./routes/users");
 
 app.use(express.json());
 app.use("/api/otpremnice", otpremniceRouter);
 app.use("/api/servisi", servisiRouter);
-app.use("/api/skladiste", skladisteRouter);
+app.use("/api/produkt", produktRouter);
 app.use("/api/users", usersRouter);
 
 mongoose
