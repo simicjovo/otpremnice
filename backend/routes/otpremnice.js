@@ -3,20 +3,21 @@ const { Otpremnica } = require("../models/otpremnica.model");
 const { ProduktZaOtpremnicu } = require("../models/produktZaOtpremnicu.model");
 const { Produkt } = require("../models/produkt.model");
 const router = express.Router();
+const verify = require("../middleware/verifyToken");
 
-router.get("/", (req, res) => {
+router.get("/", verify, (req, res) => {
   Otpremnica.find()
     .then((result) => res.json(result))
     .catch((err) => res.status(400).json(err));
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", verify, (req, res) => {
   Otpremnica.findById(req.params.id)
     .then((result) => res.json(result))
     .catch((err) => res.status(400).json(err));
 });
 
-router.post("/", async (req, res) => {
+router.post("/", verify, async (req, res) => {
   const produktiIds = Promise.all(
     req.body.produkti.map(async (orderitem) => {
       let produkt = await Produkt.findById(orderitem.product);
@@ -58,7 +59,7 @@ router.post("/", async (req, res) => {
     .catch((err) => res.statu(400).json(err));
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", verify, (req, res) => {
   const cijenaBezPdva = req.body.cijenaPDV * 1.17;
 
   Otpremnica.findByIdAndUpdate(
@@ -75,7 +76,7 @@ router.put("/:id", (req, res) => {
     .catch((err) => res.status(400).json(err));
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", verify, (req, res) => {
   Otpremnica.findByIdAndRemove(req.params.id)
     .then((result) => res.json("Deleted"))
     .catch((err) => res.status(400).json(err));
