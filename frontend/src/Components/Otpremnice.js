@@ -10,6 +10,9 @@ import Paper from "@material-ui/core/Paper";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
+import PictureAsPdf from "@material-ui/icons/PictureAsPdf";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import OtpremnicaPDF from "./OtpremnicaPDF";
 import "./deleteButton.css";
 import axios from "axios";
 
@@ -51,6 +54,7 @@ export default function Otpremnice() {
               <TableCell align="right">Ukupna cijena PDV</TableCell>
               <TableCell align="right">Datum</TableCell>
               <TableCell align="right">Obrisi</TableCell>
+              <TableCell align="right">PDF</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -72,6 +76,17 @@ export default function Otpremnice() {
                     style={{ fill: "red" }}
                     onClick={() => handleDeleteItem(row._id)}
                   ></DeleteIcon>
+                </TableCell>
+                <TableCell align="right">
+                  <PDFDownloadLink
+                    document={<OtpremnicaPDF data={row}></OtpremnicaPDF>}
+                    fileName="otpremnica.pdf"
+                  >
+                    <PictureAsPdf
+                      className="deleteButton"
+                      style={{ fill: "blue" }}
+                    ></PictureAsPdf>
+                  </PDFDownloadLink>
                 </TableCell>
               </TableRow>
             ))}

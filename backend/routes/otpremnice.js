@@ -10,7 +10,7 @@ router.get("/", verify, (req, res) => {
     .populate("komercijalista", "name")
     .populate({
       path: "produkti",
-      poulate: "produkt",
+      populate: "produkt",
     })
     .then((result) => res.json(result))
     .catch((err) => res.status(400).json(err));
@@ -36,7 +36,7 @@ router.post("/", verify, async (req, res) => {
       }
       let newOrderItem = new ProduktZaOtpremnicu({
         kolicina: orderitem.kolicina,
-        produkt: orderitem.produkt,
+        produkt: orderitem._id,
       });
       newOrderItem = await newOrderItem.save();
 
@@ -49,7 +49,6 @@ router.post("/", verify, async (req, res) => {
   await Promise.all(
     req.body.produkti.map(async (item) => {
       let produkt = await Produkt.findById(item._id);
-      console.log(produkt);
       await Produkt.findByIdAndUpdate(
         item._id,
         {
