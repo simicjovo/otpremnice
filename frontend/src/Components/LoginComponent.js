@@ -13,7 +13,7 @@ import MuiAlert from "@material-ui/lab/Alert";
 import axios from "axios";
 
 export default function LoginComponent(props) {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [failedLogin, setFailedLogin] = useState(false);
 
@@ -23,7 +23,7 @@ export default function LoginComponent(props) {
       .post(
         "/api/users/login",
         {
-          username,
+          email,
           password,
         },
         { withCredentials: true }
@@ -100,7 +100,7 @@ export default function LoginComponent(props) {
             <TextField
               autoFocus={true}
               type="text"
-              label="Username"
+              label="Email"
               margin="normal"
               justify="center"
               style={{
@@ -115,7 +115,7 @@ export default function LoginComponent(props) {
                   </InputAdornment>
                 ),
               }}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
             ></TextField>
             <TextField
               type="password"

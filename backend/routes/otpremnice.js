@@ -7,12 +7,22 @@ const verify = require("../middleware/verifyToken");
 
 router.get("/", verify, (req, res) => {
   Otpremnica.find()
+    .populate("komercijalista", "name")
+    .populate({
+      path: "produkti",
+      poulate: "produkt",
+    })
     .then((result) => res.json(result))
     .catch((err) => res.status(400).json(err));
 });
 
 router.get("/:id", verify, (req, res) => {
   Otpremnica.findById(req.params.id)
+    .populate("komercijalista")
+    .populate({
+      path: "produkti",
+      poulate: "produkt",
+    })
     .then((result) => res.json(result))
     .catch((err) => res.status(400).json(err));
 });
@@ -20,7 +30,7 @@ router.get("/:id", verify, (req, res) => {
 router.post("/", verify, async (req, res) => {
   const produktiIds = Promise.all(
     req.body.produkti.map(async (orderitem) => {
-      let produkt = await Produkt.findById(orderitem.product);
+      let produkt = await Produkt.findById(orderitem._id);
       if (orderitem.kolicina > produkt.kolicina) {
         return res.status(400).json("Greska u kolicini");
       }
@@ -38,9 +48,10 @@ router.post("/", verify, async (req, res) => {
 
   await Promise.all(
     req.body.produkti.map(async (item) => {
-      let produkt = await Produkt.findById(item.produkt);
+      let produkt = await Produkt.findById(item._id);
+      console.log(produkt);
       await Produkt.findByIdAndUpdate(
-        item.produkt,
+        item._id,
         {
           kolicina: produkt.kolicina - item.kolicina,
         },
@@ -51,24 +62,25 @@ router.post("/", verify, async (req, res) => {
 
   const otpremnica = new Otpremnica({
     produkti: produktiIdsResolved,
-    komercijalista: req.user,
+    komercijalista: req.user.id,
+    primalac: req.body.primalac,
+    ukupnaCijena: req.body.ukupnaCijena,
+    ukupnaCijenaPDV: req.body.ukupnaCijenaPDV,
   });
   otpremnica
     .save()
     .then((result) => res.json(result))
-    .catch((err) => res.statu(400).json(err));
+    .catch((err) => res.status(400).json(err));
 });
 
 router.put("/:id", verify, (req, res) => {
-  const cijenaBezPdva = req.body.cijenaPDV * 1.17;
-
   Otpremnica.findByIdAndUpdate(
     req.params.id,
     {
-      naziv: req.body.naziv,
-      kolicina: req.body.kolicina,
-      cijena: cijenaBezPdva,
-      cijenaPDV: req.body.cijenaPDV,
+      produkti: req.body.produkti,
+      komercijalista: req.body.komercijalista,
+      primalac: req.body.primalac,
+      ukupnaCijena: req.body.ukupnaCijena,
     },
     { new: true }
   )

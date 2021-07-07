@@ -20,9 +20,9 @@ router.post("/register", verify, (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  const user = await User.findOne({ name: req.body.username });
+  const user = await User.findOne({ email: req.body.email });
   if (!user) {
-    return res.status(400).send("Pogresno korisnicko ime");
+    return res.status(400).send("Pogresan email");
   }
   if (!bcrypt.compareSync(req.body.password, user.passwordHash)) {
     return res.status(400).send("Pogresna sifra");

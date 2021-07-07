@@ -16,18 +16,18 @@ router.get("/:id", verify, (req, res) => {
 });
 
 router.post("/", verify, (req, res) => {
-  const cijenaBezPdva = req.body.cijenaPDV * 1.17;
+  const cijenaBezPdva = req.body.cijenaPDV / 1.17;
 
   const produkt = new Produkt({
     naziv: req.body.naziv,
     kolicina: req.body.kolicina,
-    cijena: cijenaBezPdva,
+    cijena: cijenaBezPdva.toFixed(2),
     cijenaPDV: req.body.cijenaPDV,
   });
   produkt
     .save()
     .then((result) => res.json(result))
-    .catch((err) => res.statu(400).json(err));
+    .catch((err) => res.status(400).json(err));
 });
 
 router.put("/:id", verify, (req, res) => {

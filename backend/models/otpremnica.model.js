@@ -11,6 +11,22 @@ const otpremnicaSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  primalac: {
+    type: String,
+    required: true,
+  },
+  ukupnaCijena: {
+    type: Number,
+    required: true,
+  },
+  ukupnaCijenaPDV: {
+    type: Number,
+    required: true,
+  },
+  datum: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 exports.Otpremnica = mongoose.model("Otpremnica", otpremnicaSchema);
