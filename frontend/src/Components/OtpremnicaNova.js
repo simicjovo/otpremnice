@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Redirect } from "react-router-dom";
 import { TextField } from "@material-ui/core";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -22,6 +23,7 @@ export default function OtpremnicaNova() {
   const [totalPrice, setTotalPrice] = useState();
   const [totalPricePDV, setTotalPricePDV] = useState();
   const [primalac, setPrimalac] = useState("");
+  const [finished, setFinished] = useState(false);
   useEffect(() => {
     axios
       .get("/api/produkt")
@@ -47,7 +49,7 @@ export default function OtpremnicaNova() {
     };
     axios
       .post("/api/otpremnice", dataZaSlanje)
-      .then((res) => console.log(res))
+      .then((res) => setFinished(true))
       .catch((err) => console.log(err));
   };
 
@@ -121,6 +123,7 @@ export default function OtpremnicaNova() {
 
   return (
     <>
+      {finished ? <Redirect to="/otpremnice"></Redirect> : null}
       <div style={{ marginLeft: "5%", marginTop: "50px" }}>
         <TextField
           id="standard-basic"
