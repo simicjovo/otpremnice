@@ -57,7 +57,7 @@ export default function Skladiste() {
             {data.map((row) => (
               <TableRow key={row._id}>
                 <TableCell component="th" scope="row">
-                  {row._id}
+                  <Link to={`/skladiste/${row._id}`}>{row._id}</Link>
                 </TableCell>
                 <TableCell align="right">{row.naziv}</TableCell>
                 <TableCell align="right">{row.kolicina}</TableCell>

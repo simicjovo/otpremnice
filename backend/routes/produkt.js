@@ -31,12 +31,12 @@ router.post("/", verify, (req, res) => {
 });
 
 router.put("/:id", verify, (req, res) => {
-  const cijenaBezPdva = req.body.cijenaPDV * 1.17;
+  const cijenaBezPdva = req.body.cijenaPDV / 1.17;
 
   Produkt.findByIdAndUpdate(req.params.id, {
     naziv: req.body.naziv,
     kolicina: req.body.kolicina,
-    cijena: cijenaBezPdva,
+    cijena: cijenaBezPdva.toFixed(2),
     cijenaPDV: req.body.cijenaPDV,
   })
     .then((result) => res.json("Updated"))

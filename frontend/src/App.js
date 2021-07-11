@@ -11,6 +11,7 @@ import OtpremnicaNova from "./Components/OtpremnicaNova";
 import Skladiste from "./Components/Skladiste";
 import Servisi from "./Components/Servisi";
 import NoviProdukt from "./Components/NoviProdukt";
+import EditProdukt from "./Components/EditProdukt";
 axios.defaults.withCredentials = true;
 
 const useStyles = makeStyles((theme) => ({
@@ -107,6 +108,11 @@ function App() {
               path="/skladiste/noviProdukt"
               exact
               component={() => <NoviProdukt />}
+            ></Route>
+            <Route
+              path="/skladiste/:id"
+              exact
+              component={() => <EditProdukt></EditProdukt>}
             ></Route>
             <Route path="/servisi" exact component={() => <Servisi />}></Route>
           </Switch>
